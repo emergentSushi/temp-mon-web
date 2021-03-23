@@ -1,6 +1,8 @@
 from app import app
 from flask import render_template, jsonify
 from datetime import timedelta, datetime
+from flask_cors import cross_origin
+
 import sqlite3
 
 devices_data = {
@@ -19,6 +21,7 @@ def devices():
 	return jsonify(devices_data)
 
 @app.route('/data')
+@cross_origin()
 def data():
 	con = sqlite3.connect('grid_data.db')
 	cur = con.cursor()
