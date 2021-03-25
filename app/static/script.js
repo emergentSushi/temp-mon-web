@@ -28,16 +28,13 @@ const createDataSet = (prop, titleSuffix, sensorData, device) => {
 }
 
 document.addEventListener( "DOMContentLoaded", () => { 
-    var ctxTemp = document.getElementById('chart-temp');
-    var ctxHumidity = document.getElementById('chart-humidity');
-
     fetch('/data')
         .then(response => response.json())
         .then(data => {
             const sensorGrouped = data.groupBy('mac');
             const deviceKeys = Object.keys(sensorGrouped);
 
-            new Chart(ctxTemp, {
+            new Chart($('#chart-temp'), {
                 type: 'line',
                 data: {
                     datasets: deviceKeys.map(s => createDataSet('temp', 'celsius', sensorGrouped[s], devices[s]))
@@ -45,7 +42,7 @@ document.addEventListener( "DOMContentLoaded", () => {
                 options
             });
 
-            new Chart(ctxHumidity, {
+            new Chart($('#chart-humidity'), {
                 type: 'line',
                 data: {
                     datasets: deviceKeys.map(s => createDataSet('humidity', 'humidity', sensorGrouped[s], devices[s]))

@@ -4,21 +4,27 @@ Math.randomRange = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-HTMLElement.prototype.empty = function() { this.innerHTML = ''; }
+HTMLElement.prototype.empty = function() {
+    this.innerHTML = '';
+}
 
-HTMLElement.prototype.find = function(query) { find(this, query) };
+HTMLElement.prototype.find = function(query) {
+    return find(this, query);
+}
 
-HTMLElement.prototype.on = function(event, cb) { this.addEventListener(event, cb); }
+HTMLElement.prototype.on = function(event, cb) {
+    this.addEventListener(event, cb);
+}
 
 if (!HTMLElement.prototype.remove) {
-    HTMLElement.prototype.remove = function() {
+    HTMLElement.prototype.remove = function () {
         this.parentNode.removeChild(this);
     }
 }
 
-Array.prototype.groupBy = function(criteria) {
+Array.prototype.groupBy = function(groupKey) {
 	return this.reduce(function (obj, item) {
-		var key = item[criteria];
+		var key = item[groupKey];
 		if (!obj.hasOwnProperty(key)) {
 			obj[key] = [];
 		}
