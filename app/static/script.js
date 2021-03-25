@@ -34,6 +34,19 @@ function find(root, query) {
     else return nodes;
 }
 
+function groupBy(arr, criteria) {
+	return arr.reduce(function (obj, item) {
+		var key = item[criteria];
+		if (!obj.hasOwnProperty(key)) {
+			obj[key] = [];
+		}
+
+		obj[key].push(item);
+
+		return obj;
+	}, {});
+};
+
 let devices = {
     "A4:C1:38:3B:86:DE": "Loose",
     "A4:C1:38:73:28:DC": "Office",
@@ -41,44 +54,71 @@ let devices = {
     "A4:C1:38:56:5C:07": "Kitchen",
 }
 
-let chartColors = {
-	red: 'rgb(255, 99, 132)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
-};
+let chartColors = [
+	'rgb(255, 99, 132)',
+	'rgb(255, 159, 64)',
+	'rgb(75, 192, 192)',
+	'rgb(54, 162, 235)',
+];
 
 document.addEventListener( "DOMContentLoaded", function() { 
-    var ctx = document.getElementById('chart');
+    var ctxTemp = document.getElementById('chart-temp');
+    var ctxHumidity = document.getElementById('chart-humidity');
 
     fetch('/data')
         .then(response => response.json())
         .then(data => {
 
-        const temperature = data.filter(x => x.mac == "A4:C1:38:A4:86:79")
-                                .map(p => { return { t: new Date(p.timestamp), y: p.temp }; });
         
-        const humidity = data.filter(x => x.mac == "A4:C1:38:A4:86:79")
-                             .map(p => { return { t: new Date(p.timestamp), y: p.humidity }; });
+        const sensorGrouped = groupBy(data, 'mac');
 
-        new Chart(ctx, {
+        var temperatureDatasets = [];
+        var humidityDatasets = [];
+        let i = 0;
+        for (let s in sensorGrouped) {
+            temperatureDatasets.push(
+                {
+                label: `${devices[s]} Celcius`,
+                data: sensorGrouped[s].map(p => { return { t: new Date(p.timestamp), y: p.temp }; }),
+                borderColor: chartColors[i],
+                fill: false
+                }
+            );
+            
+            humidityDatasets.push(
+                {
+                    label: `${devices[s]} Humidity`,
+                    data: sensorGrouped[s].map(p => { return { t: new Date(p.timestamp), y: p.humidity }; }),
+                    borderColor: chartColors[i],
+                    fill: false
+                }
+            );
+
+            i++;
+        }
+
+        new Chart(ctxTemp, {
             type: 'line',
             data: {
-              datasets: [{
-                label: 'Celcius',
-                data: temperature,
-                borderColor: chartColors.red,
-                fill: false
-              },
-              {
-                label: 'Humidity',
-                data: humidity,
-                borderColor: chartColors.blue,
-                fill: false
-              }]
+              datasets: temperatureDatasets
+            },
+            options: {
+              scales: {
+                xAxes: [{
+                  type: 'time',
+                  distribution: 'linear',
+                  time: {
+                      units: 'hour'
+                  }
+                }]
+              }
+            }
+          });
+
+        new Chart(ctxHumidity, {
+            type: 'line',
+            data: {
+              datasets: humidityDatasets
             },
             options: {
               scales: {
