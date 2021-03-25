@@ -36,7 +36,7 @@ def store(con, data_str, mac):
 def db_init():
     global scan_count
 
-    con = sqlite3.connect('/home/pi/bt/grid_data.db')
+    con = sqlite3.connect('/home/pi/temp-mon-web/grid_data.db')
     cur = con.cursor()
     cur.execute('CREATE TABLE IF NOT EXISTS data (temp REAL, humidity REAL, timestamp varchar(24), mac varchar(17), battery int)')
     cur.execute('CREATE INDEX IF NOT EXISTS datetime_index ON data(timestamp)')
