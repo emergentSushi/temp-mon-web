@@ -5,8 +5,6 @@ sensor_reader/bt.py is invoked by a cron job, which creates grid_data.db with sq
 
 app.py is the entry point for the flask app that presents the grid_data.db data in a website.
 
-Uses the flask dev server for hosting, because it sits behind a nat, this probably isn't production ready ;)
-
 ## Example output
 
 ![Example output graph](https://github.com/emergentSushi/temp-mon-web/blob/main/output.png?raw=true)

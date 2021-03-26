@@ -6,9 +6,10 @@ RUN python -m pip install -r requirements.txt
 
 WORKDIR /app
 COPY . /app
+COPY ./web-start.sh web-start.sh
 
 RUN useradd appuser && chown -R appuser /app
 USER appuser
 
 ENV FLASK_APP=app:app
-CMD ["flask", "run", "--host", "0.0.0.0"]
+ENTRYPOINT ["./web-start.sh"]

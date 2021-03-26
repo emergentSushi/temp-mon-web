@@ -12,7 +12,7 @@ def index():
 @app.route('/data')
 @cross_origin()
 def data():
-	con = sqlite3.connect('grid_data.db')
+	con = sqlite3.connect('data/grid_data.db')
 	con.row_factory = sqlite3.Row
 	cur = con.cursor()
 

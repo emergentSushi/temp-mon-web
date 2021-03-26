@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 import sqlite3
 import bluetooth._bluetooth as bluez
- 
+
 from bluetooth_utils import (toggle_device, enable_le_scan,
                              parse_le_advertising_events,
                              disable_le_scan, raw_packet_to_str)
@@ -36,7 +36,7 @@ def store(con, data_str, mac):
 def db_init():
     global scan_count
 
-    con = sqlite3.connect('/home/pi/temp-mon-web/grid_data.db')
+    con = sqlite3.connect('/home/pi/data/grid_data.db')
     cur = con.cursor()
     cur.execute('CREATE TABLE IF NOT EXISTS data (temp REAL, humidity REAL, timestamp varchar(24), mac varchar(17), battery int)')
     cur.execute('CREATE INDEX IF NOT EXISTS datetime_index ON data(timestamp)')
