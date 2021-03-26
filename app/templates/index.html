@@ -3,12 +3,30 @@
     <head>
         <title>Dash</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" href="static/styles.css" />
     </head>
     <body>
-        <canvas id="chart-temp"></canvas>
-        <canvas id="chart-humidity"></canvas>
+        <div>
+            <canvas id="chart-temp"></canvas>
+            <canvas id="chart-humidity"></canvas>
+        </div>
+        <div id="devices">
+
+        </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
         <script src="static/util.js"></script>
         <script src="static/script.js"></script>
+
+        {% raw %}
+        <script type="text/html" id="devices-view">
+            <ul>
+                {{each:devices:device-info}}
+            </ul>
+        </script>
+
+        <script type="text/html" id="device-info">
+            <li>{{name}} ({{mac}}) {{battery}}%</li>
+        </script>
+        {% endraw %}
     </body>
 </html>

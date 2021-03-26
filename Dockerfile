@@ -12,4 +12,5 @@ USER appuser
 
 ENV FLASK_APP=app:app
 
+# This gets overriden in the debug config
 ENTRYPOINT ["/bin/bash", "./web-start.sh"]

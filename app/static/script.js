@@ -1,10 +1,3 @@
-const devices = {
-    "A4:C1:38:3B:86:DE": { title: "Loose", colour: 'rgb(255, 99, 132)' },
-    "A4:C1:38:73:28:DC": { title: "Office", colour: 'rgb(255, 159, 64)' },
-    "A4:C1:38:A4:86:79": { title: "Roof", colour: 'rgb(75, 192, 192)' },
-    "A4:C1:38:56:5C:07": { title: "Kitchen", colour: 'rgb(54, 162, 235)' }
-}
-
 const options = {
     scales: {
         xAxes: [{
@@ -27,27 +20,38 @@ const createDataSet = (prop, titleSuffix, sensorData, device) => {
     };
 }
 
-document.addEventListener( "DOMContentLoaded", () => { 
-    fetch('/data')
-        .then(response => response.json())
-        .then(data => {
-            const sensorGrouped = data.groupBy('mac');
-            const deviceKeys = Object.keys(sensorGrouped);
+document.addEventListener( "DOMContentLoaded", () => {
+    Promise.all([
+        fetch('/data').then(response => response.json()), 
+        fetch('/devices').then(response => response.json())
+    ]).then((values) => {
+        const data = values[0];
+        const devices = values[1];
 
-            new Chart($('#chart-temp'), {
-                type: 'line',
-                data: {
-                    datasets: deviceKeys.map(s => createDataSet('temp', 'celsius', sensorGrouped[s], devices[s]))
-                },
-                options
-            });
+        const sensorGrouped = data.groupBy('mac');
+        const deviceKeys = Object.keys(sensorGrouped);
 
-            new Chart($('#chart-humidity'), {
-                type: 'line',
-                data: {
-                    datasets: deviceKeys.map(s => createDataSet('humidity', 'humidity', sensorGrouped[s], devices[s]))
-                },
-                options
-            });
+        var model = deviceKeys.map(k => sensorGrouped[k])
+            .map(s => s[0])
+            .map(z => { return { mac: z.mac, name: devices[z.mac].title, battery: z.battery }; });
+
+        $('#devices')
+	        .insertAdjacentHTML('beforeend', render({ devices: model }, 'devices-view'));
+
+        new Chart($('#chart-temp'), {
+            type: 'line',
+            data: {
+                datasets: deviceKeys.map(s => createDataSet('temp', 'celsius', sensorGrouped[s], devices[s]))
+            },
+            options
         });
+
+        new Chart($('#chart-humidity'), {
+            type: 'line',
+            data: {
+                datasets: deviceKeys.map(s => createDataSet('humidity', 'humidity', sensorGrouped[s], devices[s]))
+            },
+            options
+        });
+    });
 });
