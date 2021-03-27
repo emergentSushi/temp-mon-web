@@ -29,7 +29,7 @@ def data():
 	con.row_factory = sqlite3.Row
 	cur = con.cursor()
 	
-	from_query = datetime.utcnow().astimezone(nzst) - timedelta(hours=48)
+	from_query = datetime.utcnow().astimezone(nzst) - timedelta(hours=12)
 	
 	rows = cur.execute(f'SELECT * FROM data WHERE timestamp > "{from_query.isoformat()}" ORDER BY timestamp DESC')
 	ret = [dict(ix) for ix in rows]

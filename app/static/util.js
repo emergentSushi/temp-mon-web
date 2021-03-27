@@ -16,6 +16,10 @@ HTMLElement.prototype.on = function(event, cb) {
     this.addEventListener(event, cb);
 }
 
+HTMLElement.prototype.appendHtml = function(html) {
+	this.insertAdjacentHTML('beforeend', html);
+}
+
 if (!HTMLElement.prototype.remove) {
     HTMLElement.prototype.remove = function () {
         this.parentNode.removeChild(this);
@@ -69,5 +73,5 @@ function render(data, id) {
 		template = template.split(tokens[x]).join(val);
 	}
 
-	return template;
+	return template.trim();
 }

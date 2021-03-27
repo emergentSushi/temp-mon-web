@@ -1,14 +1,13 @@
 # temp-mon-web
-Simple Flask app built to display temperature sensor data
+Simple Flask app built to display temperature sensor data from a collection of Xiaomi LYWSD03MMC flashed with firmware from https://github.com/atc1441/ATC_MiThermometer
 
-sensor_reader/bt.py is invoked by a cron job, which creates grid_data.db with sqlite, storing data from Xiami LYWSD03MMC flashed with firmware from https://github.com/atc1441/ATC_MiThermometer
-
-app.py is the entry point for the flask app that presents the grid_data.db data in a website.
+`sensor_reader/bt.py` is invoked by a cron job, which stores temperature, humidity and battery data in sqlite.
+`app.py` is the entry point for the flask app that renders the data in a Flask site.
 
 ## Installation
 
 `crontab -e` to configure a suitable interval for invoking `sensor_reader/bt.py` (which writes data to the sqlite db)
-`docker-compose up -d` to deploy the webhost image
+`docker-compose up -d` to run the hosting container
 
 ## Example output
 

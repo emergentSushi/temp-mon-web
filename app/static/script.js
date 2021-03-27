@@ -31,12 +31,11 @@ document.addEventListener( "DOMContentLoaded", () => {
         const sensorGrouped = data.groupBy('mac');
         const deviceKeys = Object.keys(sensorGrouped);
 
-        var model = deviceKeys.map(k => sensorGrouped[k])
-            .map(s => s[0])
+        var batteryData = deviceKeys.map(k => sensorGrouped[k])
+            .map(s => s[0]) // recorded battery levels fluctuate with temperature, take the most recent value
             .map(z => { return { mac: z.mac, name: devices[z.mac].title, battery: z.battery }; });
 
-        $('#devices')
-	        .insertAdjacentHTML('beforeend', render({ devices: model }, 'devices-view'));
+        $('#devices').appendHtml(render({ devices: batteryData }, 'devices-view'));
 
         new Chart($('#chart-temp'), {
             type: 'line',
