@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, jsonify
 from datetime import timedelta, datetime
 from flask_cors import cross_origin
+from os import path
 from dateutil import tz
 
 import sqlite3
@@ -25,7 +26,7 @@ def devices():
 @app.route('/data')
 @cross_origin()
 def data():
-	con = sqlite3.connect('../data/grid_data.db')
+	con = sqlite3.connect(app.config['PATH_TO_SQLITE'])
 	con.row_factory = sqlite3.Row
 	cur = con.cursor()
 	
