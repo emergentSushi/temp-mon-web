@@ -2,7 +2,6 @@ from app import app
 from flask import render_template, jsonify
 from datetime import timedelta, datetime
 from flask_cors import cross_origin
-from os import path
 from dateutil import tz
 
 import sqlite3
