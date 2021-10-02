@@ -1,5 +1,7 @@
+from flask.wrappers import Request
+from werkzeug.wrappers import request
 from app import app
-from flask import render_template, jsonify
+from flask import render_template, jsonify, request
 from datetime import timedelta, datetime
 from flask_cors import cross_origin
 from dateutil import tz
@@ -25,12 +27,23 @@ def devices():
 @app.route('/data')
 @cross_origin()
 def data():
-	try: 
+	try:
+		startDate = datetime.utcnow()
+
+		startDateArg = request.args.get("start")
+		if startDateArg is not None:
+			startDate = datetime.utcfromtimestamp(startDate)
+
+		hoursBack = 12
+		hoursBackArg = request.args.get("hours")
+		if hoursBackArg is not None:
+			hoursBack = int(hoursBackArg)
+
+		from_query = startDate.astimezone(nzst) - timedelta(hours=hoursBack)
+		
 		con = sqlite3.connect(app.config['PATH_TO_SQLITE'])
 		con.row_factory = sqlite3.Row
 		cur = con.cursor()
-		
-		from_query = datetime.utcnow().astimezone(nzst) - timedelta(hours=12)
 		
 		rows = cur.execute(f'SELECT * FROM data WHERE timestamp > "{from_query.isoformat()}" ORDER BY timestamp DESC')
 		ret = [dict(ix) for ix in rows]
