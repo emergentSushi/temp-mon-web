@@ -5,7 +5,7 @@ COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
 
 #Uncomment to copy your local db file into the docker image for debugging
-COPY grid_data.db data/grid_data.db
+#COPY grid_data.db data/grid_data.db
 
 WORKDIR /app
 COPY . /app
