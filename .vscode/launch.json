@@ -12,7 +12,8 @@
                         "remoteRoot": "/app"
                     }
                 ],
-                "projectType": "flask"
+                "projectType": "flask",
+                "python": "venv/Scripts/python.exe"
             }
         }
     ]

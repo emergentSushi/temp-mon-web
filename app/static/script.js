@@ -24,7 +24,14 @@ document.addEventListener( "DOMContentLoaded", () => {
     Promise.all([
         fetch('/data').then(response => response.json()), 
         fetch('/devices').then(response => response.json())
-    ]).then((values) => {
+    ])
+    .then((values) => {
+        var errs = values.filter(v => !v.ok);
+        if(errs) {
+            errs.forEach(err => $('body').appendHtml(render({ errorText: err.error }, 'error')));
+            return;
+        }
+
         const data = values[0];
         const devices = values[1];
 

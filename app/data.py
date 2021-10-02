@@ -25,14 +25,17 @@ def devices():
 @app.route('/data')
 @cross_origin()
 def data():
-	con = sqlite3.connect(app.config['PATH_TO_SQLITE'])
-	con.row_factory = sqlite3.Row
-	cur = con.cursor()
-	
-	from_query = datetime.utcnow().astimezone(nzst) - timedelta(hours=12)
-	
-	rows = cur.execute(f'SELECT * FROM data WHERE timestamp > "{from_query.isoformat()}" ORDER BY timestamp DESC')
-	ret = [dict(ix) for ix in rows]
-	
-	con.close()
-	return jsonify(ret)
+	try: 
+		con = sqlite3.connect(app.config['PATH_TO_SQLITE'])
+		con.row_factory = sqlite3.Row
+		cur = con.cursor()
+		
+		from_query = datetime.utcnow().astimezone(nzst) - timedelta(hours=12)
+		
+		rows = cur.execute(f'SELECT * FROM data WHERE timestamp > "{from_query.isoformat()}" ORDER BY timestamp DESC')
+		ret = [dict(ix) for ix in rows]
+		
+		con.close()
+		return jsonify(ret)
+	except Exception as e:
+		return jsonify({ "error":str(e) }), 500;
