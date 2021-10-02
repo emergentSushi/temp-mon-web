@@ -11,6 +11,13 @@ const options = {
 };
 
 const createDataSet = (prop, titleSuffix, sensorData, device) => {
+    // cull data if we're pulling large numbers of points
+    if (sensorData.length > 10000) {
+        sensorData = sensorData.filter(function(_, index) {
+            return index % 10 == 0;
+        })
+    }
+
     return {
         label: `${device.title} ${titleSuffix}`,
         data: sensorData.map(p => { return { t: new Date(p.timestamp), y: p[prop] }; }),
