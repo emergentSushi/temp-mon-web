@@ -32,7 +32,7 @@ def data():
 
 		startDateArg = request.args.get("start")
 		if startDateArg is not None:
-			startDate = datetime.utcfromtimestamp(startDate)
+			startDate = datetime.utcfromtimestamp(int(startDateArg))
 
 		hoursBack = 12
 		hoursBackArg = request.args.get("hours")

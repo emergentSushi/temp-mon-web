@@ -21,8 +21,12 @@ const createDataSet = (prop, titleSuffix, sensorData, device) => {
 }
 
 document.addEventListener( "DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const start = params.get('start') ?? Math.floor(Date.now() / 1000);
+    const lookBackHours = params.get('hours') ?? 12;
+
     Promise.all([
-        fetch('/data').then(v => v.json()), 
+        fetch(`/data?start=${start}&hours=${lookBackHours}`).then(v => v.json()), 
         fetch('/devices').then(v => v.json())
     ])
     .then((values) => {
