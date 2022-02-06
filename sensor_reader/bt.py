@@ -2,6 +2,7 @@
 import sys
 from datetime import datetime
 import sqlite3
+import threading
 from bluetooth_utils import (toggle_device, enable_le_scan,
                              parse_le_advertising_events,
                              disable_le_scan, raw_packet_to_str, get_sock)
@@ -54,6 +55,8 @@ try:
         data_str = raw_packet_to_str(data)
         if data_str[6:10] == '1a18' and mac in devices:
             store(con, data_str, mac)
+
+    threading.Timer(30, sys.exit).start()
 
     parse_le_advertising_events(sock,
                                 handler=le_advertise_packet_handler,
