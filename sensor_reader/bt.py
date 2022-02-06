@@ -28,7 +28,7 @@ def store(con, data_str, mac):
 
     readings[mac] = { "temp": temp, "humidity": humidity, "battery": battery};
     if len(readings) == len(devices):
-        sys.exit()
+        self_destruct()
 
 def db_init():
     con = sqlite3.connect('/home/pi/data/grid_data.db')
@@ -50,16 +50,20 @@ except:
 
 enable_le_scan(sock, filter_duplicates=True)
 
+def self_destruct():
+    disable_le_scan(sock)
+    sys.exit()
+
 try:
     def le_advertise_packet_handler(mac, adv_type, data, rssi):
         data_str = raw_packet_to_str(data)
         if data_str[6:10] == '1a18' and mac in devices:
             store(con, data_str, mac)
 
-    threading.Timer(30, sys.exit).start()
+    threading.Timer(30, self_destruct).start()
 
     parse_le_advertising_events(sock,
                                 handler=le_advertise_packet_handler,
                                 debug=False)
 except KeyboardInterrupt:
-    disable_le_scan(sock)
+    self_destruct()
