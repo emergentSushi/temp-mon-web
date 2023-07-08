@@ -1,4 +1,4 @@
-Flask==1.1.2
-Flask-Cors==3.0.10
-gunicorn==20.0.4
-python-dateutil==2.8.1
+Flask==2.*
+Flask-Cors==4.*
+gunicorn==20.*
+python-dateutil==2.*

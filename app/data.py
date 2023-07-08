@@ -2,7 +2,7 @@ from flask.wrappers import Request
 from werkzeug.wrappers import request
 from app import app
 from flask import render_template, jsonify, request
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 from flask_cors import cross_origin
 from dateutil import tz
 
@@ -28,7 +28,7 @@ def devices():
 @cross_origin()
 def data():
 	try:
-		startDate = datetime.utcnow()
+		startDate = datetime.now(timezone.utc)
 
 		startDateArg = request.args.get("start")
 		if startDateArg is not None:
