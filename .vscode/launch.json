@@ -13,7 +13,7 @@
                     }
                 ],
                 "projectType": "flask",
-                "python": "venv/Scripts/python.exe"
+                "python": "${command:python.interpreterPath}"
             }
         }
     ]

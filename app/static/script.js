@@ -1,17 +1,18 @@
 const options = {
     scales: {
-        xAxes: [{
+        x: {
+            display: true,
             type: 'time',
-            distribution: 'linear',
             time: {
-                units: 'hour'
+                unit: 'hour'
             }
-        }]
+        }
     }
 };
 
 const createDataSet = (prop, titleSuffix, sensorData, device) => {
-    // cull data if we're pulling large numbers of points
+    // cull data if we're pulling large numbers of points, bandwidth is cheap, but chartjs starts lagging a 
+    // bit when there's thousands of points
     if (sensorData.length > 10000) {
         sensorData = sensorData.filter(function(_, index) {
             return index % 10 == 0;
