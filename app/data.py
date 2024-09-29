@@ -7,6 +7,7 @@ from flask.wrappers import Request
 from flask_cors import cross_origin
 
 from app import app
+from app.config import sensors
 
 nzst = tz.gettz("Pacific/Auckland")
 
@@ -19,15 +20,7 @@ def index():
 @app.route("/devices")
 @cross_origin()
 def devices() -> Response:
-    return jsonify(
-        {
-            "A4:C1:38:3B:86:DE": {"title": "Larder", "colour": "rgb(255, 99, 132)"},
-            "A4:C1:38:73:28:DC": {"title": "Office", "colour": "rgb(255, 159, 64)"},
-            "A4:C1:38:A4:86:79": {"title": "Roof", "colour": "rgb(75, 192, 192)"},
-            "A4:C1:38:56:5C:07": {"title": "Kitchen", "colour": "rgb(54, 162, 235)"},
-            "A4:C1:38:EE:06:4C": {"title": "Outdoor", "colour": "rgb(97, 255, 51)"},
-        }
-    )
+    return jsonify(sensors)
 
 
 @app.route("/data")

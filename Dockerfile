@@ -5,17 +5,10 @@ EXPOSE 5002
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-ENV POETRY_VERSION=1.8.3
-ENV POETRY_HOME=/opt/poetry
-ENV POETRY_VENV=/opt/poetry-venv
-ENV POETRY_CACHE_DIR=/opt/.cache
+RUN pip install poetry
 
-RUN python3 -m venv $POETRY_VENV \
-	&& $POETRY_VENV/bin/pip install poetry==${POETRY_VERSION}
-
-ENV PATH="${PATH}:${POETRY_VENV}/bin"
-
-RUN poetry config virtualenvs.create true && poetry config virtualenvs.in-project true
+RUN poetry config virtualenvs.create true \
+	&& poetry config virtualenvs.in-project true
 
 WORKDIR /app
 COPY . /app
