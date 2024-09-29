@@ -51,9 +51,7 @@ def data() -> Response | tuple[Response, int]:
         con.row_factory = sqlite3.Row
         cur = con.cursor()
 
-        rows = cur.execute(
-            f'SELECT * FROM data WHERE timestamp > "{from_query.isoformat()}" ORDER BY timestamp DESC'
-        )
+        rows = cur.execute(f'SELECT * FROM data WHERE timestamp > "{from_query.isoformat()}" ORDER BY timestamp DESC')
         ret = [dict(ix) for ix in rows]
 
         con.close()

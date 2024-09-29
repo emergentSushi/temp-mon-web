@@ -4,7 +4,7 @@ import sys
 import threading
 from datetime import datetime
 
-from bluetooth_utils import (
+from bluetooth_utils import (  # type: ignore[attr-defined]
     disable_le_scan,
     enable_le_scan,
     get_sock,
@@ -28,15 +28,10 @@ def store(con, data_str, mac) -> None:
     temp = int(data_str[22:26], 16) / 10
     humidity = int(data_str[26:28], 16)
     battery = int(data_str[28:30], 16)
-    print(
-        "%s - Device: %s Temp: %sc Humidity: %s%% Batt: %s%%"
-        % (datetime.now().isoformat(), devices[mac], temp, humidity, battery)
-    )
+    print("%s - Device: %s Temp: %sc Humidity: %s%% Batt: %s%%" % (datetime.now().isoformat(), devices[mac], temp, humidity, battery))
 
     cur = con.cursor()
-    cur.execute(
-        f'INSERT INTO data VALUES ({temp}, {humidity}, "{datetime.now().isoformat()}", "{mac}", {battery})'
-    )
+    cur.execute(f'INSERT INTO data VALUES ({temp}, {humidity}, "{datetime.now().isoformat()}", "{mac}", {battery})')
     con.commit()
 
     readings[mac] = {"temp": temp, "humidity": humidity, "battery": battery}
@@ -47,9 +42,7 @@ def store(con, data_str, mac) -> None:
 def db_init() -> sqlite3.Connection:
     con = sqlite3.connect("/home/pi/data/grid_data.db")
     cur = con.cursor()
-    cur.execute(
-        "CREATE TABLE IF NOT EXISTS data (temp REAL, humidity REAL, timestamp varchar(24), mac varchar(17), battery int)"
-    )
+    cur.execute("CREATE TABLE IF NOT EXISTS data (temp REAL, humidity REAL, timestamp varchar(24), mac varchar(17), battery int)")
     cur.execute("CREATE INDEX IF NOT EXISTS datetime_index ON data(timestamp)")
     con.commit()
 
@@ -61,7 +54,7 @@ toggle_device(0, True)
 
 try:
     sock = get_sock()
-except:
+except Exception:
     print("Cannot open bluetooth device")
     raise
 

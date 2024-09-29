@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - 8080:5000
+      - 8080:5002
     volumes:
       - type: bind
         source: ./data

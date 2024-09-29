@@ -107,10 +107,7 @@ def toggle_device(dev_id, enable):
         )
     except IOError as e:
         if e.errno == EALREADY:
-            print(
-                "Bluetooth device %d is already %s"
-                % (dev_id, "enabled" if enable else "disabled")
-            )
+            print("Bluetooth device %d is already %s" % (dev_id, "enabled" if enable else "disabled"))
         else:
             raise
     finally:
@@ -191,9 +188,7 @@ def enable_le_scan(
     """
     print("Enable LE scan")
     own_bdaddr_type = LE_PUBLIC_ADDRESS  # does not work with LE_RANDOM_ADDRESS
-    cmd_pkt = struct.pack(
-        "<BHHBB", SCAN_TYPE_PASSIVE, interval, window, own_bdaddr_type, filter_policy
-    )
+    cmd_pkt = struct.pack("<BHHBB", SCAN_TYPE_PASSIVE, interval, window, own_bdaddr_type, filter_policy)
     bluez.hci_send_cmd(sock, OGF_LE_CTL, OCF_LE_SET_SCAN_PARAMETERS, cmd_pkt)
     print(
         "scan params: interval=%.3fms window=%.3fms own_bdaddr=%s "
@@ -202,17 +197,10 @@ def enable_le_scan(
             interval * 0.625,
             window * 0.625,
             "public" if own_bdaddr_type == LE_PUBLIC_ADDRESS else "random",
-            (
-                "yes"
-                if filter_policy
-                in (FILTER_POLICY_SCAN_WHITELIST, FILTER_POLICY_SCAN_AND_CONN_WHITELIST)
-                else "no"
-            ),
+            ("yes" if filter_policy in (FILTER_POLICY_SCAN_WHITELIST, FILTER_POLICY_SCAN_AND_CONN_WHITELIST) else "no"),
         )
     )
-    cmd_pkt = struct.pack(
-        "<BB", SCAN_ENABLE, SCAN_FILTER_DUPLICATES if filter_duplicates else 0x00
-    )
+    cmd_pkt = struct.pack("<BB", SCAN_ENABLE, SCAN_FILTER_DUPLICATES if filter_duplicates else 0x00)
     bluez.hci_send_cmd(sock, OGF_LE_CTL, OCF_LE_SET_SCAN_ENABLE, cmd_pkt)
 
 
@@ -228,9 +216,7 @@ def disable_le_scan(sock):
     bluez.hci_send_cmd(sock, OGF_LE_CTL, OCF_LE_SET_SCAN_ENABLE, cmd_pkt)
 
 
-def start_le_advertising(
-    sock, min_interval=1000, max_interval=1000, adv_type=ADV_NONCONN_IND, data=()
-):
+def start_le_advertising(sock, min_interval=1000, max_interval=1000, adv_type=ADV_NONCONN_IND, data=()):
     """
     Start LE advertising.
 
@@ -284,9 +270,7 @@ def stop_le_advertising(sock):
     print("Advertising stopped")
 
 
-def parse_le_advertising_events(
-    sock, mac_addr=None, packet_length=None, handler=None, debug=False
-):
+def parse_le_advertising_events(sock, mac_addr=None, packet_length=None, handler=None, debug=False):
     """
     Parse and report LE advertisements.
 
@@ -351,10 +335,7 @@ def parse_le_advertising_events(
             if packet_length and plen != packet_length:
                 # ignore this packet
                 if debug:
-                    print(
-                        "packet with non-matching length: mac=%s adv_type=%02x plen=%s"
-                        % (mac_addr_str, adv_type, plen)
-                    )
+                    print("packet with non-matching length: mac=%s adv_type=%02x plen=%s" % (mac_addr_str, adv_type, plen))
                     print(raw_packet_to_str(pkt))
                 continue
 
@@ -364,26 +345,17 @@ def parse_le_advertising_events(
 
             if mac_addr and mac_addr_str not in mac_addr:
                 if debug:
-                    print(
-                        "packet with non-matching mac %s adv_type=%02x data=%s RSSI=%s"
-                        % (mac_addr_str, adv_type, raw_packet_to_str(data), rssi)
-                    )
+                    print("packet with non-matching mac %s adv_type=%02x data=%s RSSI=%s" % (mac_addr_str, adv_type, raw_packet_to_str(data), rssi))
                 continue
 
             if debug:
-                print(
-                    "LE advertisement: mac=%s adv_type=%02x data=%s RSSI=%d"
-                    % (mac_addr_str, adv_type, raw_packet_to_str(data), rssi)
-                )
+                print("LE advertisement: mac=%s adv_type=%02x data=%s RSSI=%d" % (mac_addr_str, adv_type, raw_packet_to_str(data), rssi))
 
             if handler is not None:
                 try:
                     handler(mac_addr_str, adv_type, data, rssi)
                 except Exception as e:
-                    print(
-                        "Exception when calling handler with a BLE advertising event: %r"
-                        % (e,)
-                    )
+                    print("Exception when calling handler with a BLE advertising event: %r" % (e,))
                     import traceback
 
                     traceback.print_exc()

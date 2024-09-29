@@ -1,0 +1,7 @@
+[flake8]
+exclude = 
+    .venv,
+    venv,
+    .git
+max-line-length = 160
+extend-ignore = E203,E701

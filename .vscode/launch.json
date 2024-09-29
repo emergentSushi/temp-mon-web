@@ -12,8 +12,7 @@
                         "remoteRoot": "/app"
                     }
                 ],
-                "projectType": "flask",
-                "python": "${command:python.interpreterPath}"
+                "projectType": "flask"
             }
         }
     ]
