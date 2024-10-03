@@ -1,12 +1,12 @@
 const options = {
     scales: {
-        x: {
-            display: true,
+        xAxes: [{
             type: 'time',
+            distribution: 'linear',
             time: {
-                unit: 'hour'
+                units: 'hour'
             }
-        }
+        }]
     }
 };
 
