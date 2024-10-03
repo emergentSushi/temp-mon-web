@@ -7,7 +7,7 @@ class SensorConfig(BaseModel):
     graph_colour: str
 
 
-PATH_TO_SQLITE = "grid_data.db"
+PATH_TO_SQLITE = "data/grid_data.db"
 
 sensors: dict[str, SensorConfig] = {
     "A4:C1:38:3B:86:DE": SensorConfig(mac="A4:C1:38:3B:86:DE", name="Larder", graph_colour="rgb(255, 99, 132)"),
