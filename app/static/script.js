@@ -11,7 +11,8 @@ const options = {
 };
 
 const createDataSet = (prop, titleSuffix, sensorData, device) => {
-    // cull data if we're pulling large numbers of points
+    // cull data if we're pulling large numbers of points, bandwidth is cheap, but chartjs starts lagging a 
+    // bit when there's thousands of points
     if (sensorData.length > 10000) {
         sensorData = sensorData.filter(function(_, index) {
             return index % 10 == 0;
@@ -19,10 +20,10 @@ const createDataSet = (prop, titleSuffix, sensorData, device) => {
     }
 
     return {
-        label: `${device.title} ${titleSuffix}`,
+        label: `${device.name} ${titleSuffix}`,
         data: sensorData.map(p => { return { t: new Date(p.timestamp), y: p[prop] }; }),
-        borderColor: device.colour,
-        backgroundColor: device.colour,
+        borderColor: device.graph_colour,
+        backgroundColor: device.graph_colour,
         fill: false
     };
 }
@@ -45,7 +46,7 @@ document.addEventListener( "DOMContentLoaded", () => {
 
         var batteryData = deviceKeys.map(k => sensorGrouped[k])
             .map(s => s[0]) // recorded battery levels fluctuate with temperature, take the most recent value
-            .map(z => { return { mac: z.mac, name: devices[z.mac].title, battery: z.battery }; });
+            .map(z => { return { mac: z.mac, name: devices[z.mac].name, battery: z.battery }; });
 
         $('#devices').appendHtml(render({ devices: batteryData }, 'devices-view'));
 

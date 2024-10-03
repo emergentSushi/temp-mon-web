@@ -1,20 +1,21 @@
 {
     "configurations": [
         {
-            "name": "Docker: Python - Flask",
-            "type": "docker",
+            "name": "Python Debugger: Flask",
+            "type": "debugpy",
             "request": "launch",
-            "preLaunchTask": "docker-run: debug",
-            "python": {
-                "pathMappings": [
-                    {
-                        "localRoot": "${workspaceFolder}",
-                        "remoteRoot": "/app"
-                    }
-                ],
-                "projectType": "flask",
-                "python": "venv/Scripts/python.exe"
-            }
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "app\\app.py",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload"
+            ],
+            "jinja": true,
+            "autoStartBrowser": false
         }
     ]
 }

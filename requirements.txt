@@ -1,4 +1,0 @@
-Flask==2.*
-Flask-Cors==4.*
-gunicorn==20.*
-python-dateutil==2.*
