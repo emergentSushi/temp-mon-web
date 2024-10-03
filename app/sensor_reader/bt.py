@@ -67,7 +67,7 @@ try:
         if data_str[6:10] == "1a18" and mac in sensors:
             store(con, data_str, mac)
 
-    threading.Timer(30, self_destruct).start()
+    threading.Timer(25, self_destruct).start()
 
     parse_le_advertising_events(sock, handler=le_advertise_packet_handler, debug=False)
 except KeyboardInterrupt:

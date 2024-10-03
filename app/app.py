@@ -8,7 +8,7 @@ from app.data import get_sensor_data
 
 app = Flask(__name__, static_url_path="/static")
 
-DEFAULT_HOURS = 1200
+DEFAULT_HOURS = 18
 
 
 @app.route("/")
@@ -19,7 +19,7 @@ def index():
 @app.route("/devices")
 @cross_origin()
 def devices() -> Response:
-    return jsonify([sensors[s].model_dump() for s in sensors])
+    return jsonify({key: value.model_dump() for key, value in sensors.items()})
 
 
 @app.route("/data")
