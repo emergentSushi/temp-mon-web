@@ -3,26 +3,27 @@ from datetime import datetime, timedelta
 from flask import Flask, Response, jsonify, render_template, request
 from flask_cors import cross_origin
 
-from app.config import sensors
-from app.data import get_sensor_data
+from data import get_configured_sensors, get_sensor_data
 
-app = Flask(__name__, static_url_path="/static")
+
+application = Flask(__name__, static_url_path="/static")
 
 DEFAULT_HOURS = 18
 
 
-@app.route("/")
+@application.route("/")
 def index():
     return render_template("index.html")
 
 
-@app.route("/devices")
+@application.route("/devices")
 @cross_origin()
 def devices() -> Response:
+    sensors = get_configured_sensors()
     return jsonify({key: value.model_dump() for key, value in sensors.items()})
 
 
-@app.route("/data")
+@application.route("/data")
 @cross_origin()
 def data() -> Response | tuple[Response, int]:
     try:
@@ -42,3 +43,7 @@ def data() -> Response | tuple[Response, int]:
         return jsonify(ret)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+if __name__ == "__main__":
+    application.run()

@@ -16,6 +16,14 @@
             ],
             "jinja": true,
             "autoStartBrowser": false
-        }
+        },
+        {
+            "name": "Python Debugger: Bluetooth scanner",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "app/bt_scan.py",
+            "console": "integratedTerminal"
+        },
+        
     ]
 }
