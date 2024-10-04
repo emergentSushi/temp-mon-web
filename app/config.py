@@ -23,7 +23,7 @@ class SensorReading(BaseModel):
     @staticmethod
     def from_adv_payload(payload: bytes) -> "SensorReading":
         # We expect an advertising message payload of
-        # <6 bytes of Mac address><4 bytes of current temperature x 10><2 bytes of humidity %><2 bytes of battery %>
+        # <48 bits of Mac address><16 bit unsigned int - current temperature x 10><8 bit unsigned int - humidity %><8 bit unsigned int - battery of %>
         mac = ":".join("%02x" % struct.unpack("B", bytes([x]))[0] for x in payload[0:6]).upper()
 
         return SensorReading(
