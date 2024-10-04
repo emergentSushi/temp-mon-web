@@ -1,9 +1,9 @@
 import asyncio
 
 from bleak import BleakScanner
+from config import SensorReading
 
-from app.config import SensorReading
-from app.data import get_configured_sensors, write_sensor_data
+from data import get_configured_sensors, write_sensor_data
 
 
 async def main():

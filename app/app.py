@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from flask import Flask, Response, jsonify, render_template, request
 from flask_cors import cross_origin
 
-from app.data import get_configured_sensors, get_sensor_data
+from data import get_configured_sensors, get_sensor_data
 
 application = Flask(__name__, static_url_path="/static")
 
