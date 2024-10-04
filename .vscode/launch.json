@@ -24,6 +24,5 @@
             "program": "app/bt_scan.py",
             "console": "integratedTerminal"
         },
-        
     ]
 }

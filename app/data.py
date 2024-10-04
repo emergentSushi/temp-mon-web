@@ -2,7 +2,7 @@ from datetime import datetime
 from sqlite3 import Connection, Cursor, Row, connect
 from typing import Any
 
-from config import SensorConfig, SensorReading
+from app.config import SensorConfig, SensorReading
 
 PATH_TO_SQLITE = "data/grid_data.db"
 

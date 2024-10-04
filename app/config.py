@@ -1,5 +1,6 @@
-from datetime import datetime
 import struct
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
