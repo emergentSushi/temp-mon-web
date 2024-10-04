@@ -12,5 +12,3 @@ Simple Flask app built to display temperature sensor data from a collection of X
 ## Example output
 
 ![Example output graph](https://github.com/emergentSushi/temp-mon-web/blob/main/output.png?raw=true)
-
-sensor_reader/bluetooth_utils.py shamelessly copied from https://github.com/colin-guyon/py-bluetooth-utils/blob/master/bluetooth_utils.py

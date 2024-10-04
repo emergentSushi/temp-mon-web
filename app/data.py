@@ -36,6 +36,7 @@ def write_sensor_data(reading: SensorReading):
         f'INSERT INTO data VALUES ({reading.temperature}, {reading.humidity}, "{reading.date_recorded.isoformat()}", "{reading.mac}", {reading.battery})'
     )
     connection.commit()
+    connection.close()
 
 
 def get_configured_sensors() -> dict[str, SensorConfig]:
